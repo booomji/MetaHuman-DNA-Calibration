@@ -1,4 +1,24 @@
 """
+BEE NOTE 1 START 12_09_2023 
+This edited doc shows how you can add a blendshape to the original metahuman face so you can use a custom face instead.
+If you see code which is commented with the text BEE it means a slight tweak is necessary to run this example correctly. I have pointed this bug to Epic and they will have it fixed soon.
+Do a search for the string BEE in this document and you will land on all the steps needed to run the script correctly.
+
+OUTLINE
+1.Build the scene using the DNA Viewer
+2.ONLY tick the Joints in the Build options
+3.Do NOT run the block that looks like the code below ( or simply comment that code block out when you see it) 
+config = RigConfig(
+    gui_path=f"{DATA_DIR}/gui.ma",
+    analog_gui_path=f"{DATA_DIR}/analog_gui.ma",
+    aas_path=ADDITIONAL_ASSEMBLE_SCRIPT,
+)
+build_rig(dna=dna, config=config)
+4. 
+
+https://github.com/EpicGames/MetaHuman-DNA-Calibration/issues/32
+BEE NOTE 1 END 12_09_2023
+
 This example demonstrates how to propagate changes from maya scene to dna file.
 IMPORTANT: You have to setup the environment before running this example. Please refer to the 'Environment setup' section in README.md.
 
@@ -7,17 +27,17 @@ Follow the steps:
 1. Start Maya
 2. open maya scene (do 2.1 or 2.2)
 2.1. Open existing maya scene generated from dna or
-2.2. start DNA Viewer GUI (dna_viewer_run_in_maya.py)
+2.2. start DNA Viewer GUI (dna_viewer_run_in_maya.py) #BEE - I go this route
     - Select DNA file that you want to load and generate scene for
     - Select meshes that you want to change
-    - Tick joints in Build Options
+    - Tick joints in Build Options #BEE - make sure to ONLY check joints
     - Click Process
     - in Maya scene rig is going to be assembled
-3. Run this script to the part called "load data"
+3. Run this script to the part called "load data" #BEE - DO NOT run the code block mentioned in BEE NOTE 1 START 12_09_2023  
     a. get current vertex positions for all meshes
 
 4. In the scene, make modifications to the neutral mesh and joints (important note:
-    if you're rotating joints, be sure to freeze transformations, so they're stored as orientations)
+    if you're rotating joints, be sure to freeze transformations, so they're stored as orientations) #BEE - ADD your blendshape at this stage. Topology should be exactly the same  
 5. Run this script from the part called "propagate changes to dna" to the end
     a. set new joints translations
     b. set new joints rotations
@@ -202,12 +222,16 @@ def assemble_maya_scene():
 makedirs(OUTPUT_DIR, exist_ok=True)
 
 dna = DNA(CHARACTER_DNA)
+#BEE START - DO NOT RUN THIS BLOCK
+'''
 config = RigConfig(
     gui_path=f"{DATA_DIR}/gui.ma",
     analog_gui_path=f"{DATA_DIR}/analog_gui.ma",
     aas_path=ADDITIONAL_ASSEMBLE_SCRIPT,
 )
 build_rig(dna=dna, config=config)
+'''
+#BEE END - DO NOT RUN THIS BLOCK 
 
 # This is step 3 sub-step a
 current_vertices_positions = {}
